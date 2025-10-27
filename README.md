@@ -4,7 +4,7 @@
 ## 核心概念（簡述）
 - **Novelty（新穎度）**: 以訓練資料的平均向量作為錨點，計算每筆向量到錨點的距離。
 - **Diversity（多樣性）**: 對向量做 KMeans 分群後，計算群集標籤分佈的訊息熵（分佈越均勻，多樣性越高）。
-- **ATI 指標**: \( ATI = 100 \times (w_N \cdot \text{Novelty} + w_D \cdot \text{Diversity}) \)。權重 \(w_N, w_D\) 可由訓練資料學得（目前提供 OLS，後續可換 Bayesian）。
+- **ATI 指標**: $ATI = 100 \times (w_N \cdot \text{Novelty} + w_D \cdot \text{Diversity})$。權重 $w_N, w_D$ 可由訓練資料學得（目前提供 OLS，後續可換 Bayesian）。
 - **訓練/預測切分**: 以時間序列排序後的前 70% 作為訓練，後 30% 作為測試（避免資料洩漏）。
 
 ## 目錄結構
@@ -63,7 +63,7 @@ python /Users/lck/workspace/ATI-Project/src/main.py
 ## 訓練與預測管線（設計藍圖）
 - **(1) 資料準備**: 收集一年貼文資料（文字、影像、metadata、engagement），按時間排序；前 70% 訓練、後 30% 測試。
 - **(2) 多模態嵌入**: 使用 CLIP 生成文字/影像向量並 L2-normalize；metadata 做 z-score；多模態融合為貼文向量。
-- **(3) ATI 計算（訓練期）**: 用訓練資料估計錨點與叢集，計算每貼文 novelty 與整體 diversity；學得 \(w_N, w_D\)（Bayesian 或 OLS）；組合為 ATI。
+- **(3) ATI 計算（訓練期）**: 用訓練資料估計錨點與叢集，計算每貼文 novelty 與整體 diversity；學得 $w_N, w_D$（Bayesian 或 OLS）；組合為 ATI。
 - **(4) 模型驗證**: 進行 posterior predictive checks（先以 OLS 殘差與擬合度檢查起步，後續可接 PyMC/ArviZ）。
 - **(5) 預測（測試期）**: 以訓練期的錨點、叢集、標準化器，對測試貼文計算 novelty/diversity，輸出 ATI。
 - **(6) 輸出**: 於貼文層級生成 ATI，並可彙整至門市與品牌層級。
