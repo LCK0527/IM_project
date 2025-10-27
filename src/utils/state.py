@@ -4,6 +4,7 @@ import os
 
 import numpy as np
 from sklearn.cluster import KMeans
+from sklearn.feature_extraction.text import TfidfVectorizer
 from joblib import dump, load
 
 
@@ -13,6 +14,7 @@ class TrainingState:
     kmeans: KMeans
     scaler_stats: Dict[str, Dict[str, float]]
     weight_model: Any
+    text_vectorizer: Optional[TfidfVectorizer] = None
 
 
 def save_state(state: TrainingState, path: str) -> None:
